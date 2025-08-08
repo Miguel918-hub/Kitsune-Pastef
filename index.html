@@ -9,7 +9,7 @@
     --bg:#0b0e0f;
     --panel:#0f1515;
     --muted:#98a3a3;
-    --accent:#2dd36f; /* green accent */
+    --accent:#2dd36f;
     --danger:#ff6b6b;
     --glass: rgba(255,255,255,0.03);
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -32,7 +32,6 @@
   input[type="text"], select{
     width:100%; padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03); background:var(--panel); color:inherit; outline:none;
   }
-  .row{display:flex; gap:8px}
   textarea{
     width:100%; min-height:360px; resize:vertical; padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
     border:1px solid rgba(255,255,255,0.03); color: #dff7ea; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; font-size:13px;
@@ -49,17 +48,15 @@
   .meta{display:flex; gap:8px; align-items:center; justify-content:space-between; margin-bottom:8px}
   .small{font-size:12px;color:var(--muted)}
   .badge{background:rgba(0,0,0,0.25); padding:6px 8px;border-radius:999px;font-weight:600}
-  .topbar{display:flex; gap:8px; align-items:center; justify-content:space-between}
-  .linklike{background:transparent;border:0;color:var(--accent);text-decoration:underline;cursor:pointer;padding:6px 8px;border-radius:6px}
-  footer{margin-top:14px;color:var(--muted); font-size:13px}
-  .tok-k { color:#7ee787; font-weight:600 }
-  .tok-fn { color:#8fdaf0 }
-  .tok-str { color:#ffd38a }
-  .tok-cm { color:#7b8b8b; font-style:italic }
   @media (max-width:980px){
     .wrap{grid-template-columns:1fr; padding:12px}
     .preview{height:360px}
   }
+  /* syntax highlight styles */
+  .tok-k { color:#7ee787; font-weight:600 }
+  .tok-fn { color:#8fdaf0 }
+  .tok-str { color:#ffd38a }
+  .tok-cm { color:#7b8b8b; font-style:italic }
 </style>
 </head>
 <body>
@@ -151,9 +148,11 @@ const langSelect = $('lang');
 const titleInput = $('title');
 const expansionSelect = $('expansion');
 
+// Base64 encode/decode helpers
 function b64enc(s){ return btoa(unescape(encodeURIComponent(s))); }
 function b64dec(s){ try { return decodeURIComponent(escape(atob(s))); } catch(e){ return null } }
 
+// Atualiza a hash da URL com os dados codificados
 function setHashFromData(obj){
   const json = JSON.stringify(obj);
   const b = b64enc(json);
@@ -161,6 +160,7 @@ function setHashFromData(obj){
   updateHashInfo();
 }
 
+// Lê dados da hash atual da URL e decodifica
 function readDataFromHash(){
   if(!location.hash) return null;
   const b = location.hash.slice(1);
@@ -169,6 +169,7 @@ function readDataFromHash(){
   try{ return JSON.parse(json); } catch(e){ return null }
 }
 
+// Atualiza texto informativo sobre hash
 function updateHashInfo(){
   if(location.hash){
     const short = location.hash.slice(1,9);
@@ -178,12 +179,12 @@ function updateHashInfo(){
   }
 }
 
-/* simples escape html */
+// Escape simples para HTML
 function escapeHtml(str){
   return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 }
 
-/* simples highlight básico para algumas linguagens */
+// Highlight simples para algumas linguagens
 const HIGHLIGHTERS = {
   javascript: str => {
     return escapeHtml(str)
@@ -221,11 +222,7 @@ const HIGHLIGHTERS = {
   default: str => escapeHtml(str)
 };
 
-function highlightText(lang, text){
-  const fn = HIGHLIGHTERS[lang] || HIGHLIGHTERS.default;
-  try { return fn(text); } catch(e) { return escapeHtml(text); }
-}
-
+// Renderiza o preview com highlight
 function renderPreview(){
   const lang = (langSelect.value === 'auto') ? detectLang(editor.value) : langSelect.value;
   badgeLang.textContent = lang;
@@ -234,87 +231,7 @@ function renderPreview(){
   codeBlock.innerHTML = html;
 }
 
+// Detecta linguagem básica pelo conteúdo
 function detectLang(text){
   const t = text.slice(0,2000).toLowerCase();
-  if(t.includes('<?php') || /<\s*html/.test(t)) return 'html';
-  if(/\bfunction\b/.test(t) && /=>/.test(t)) return 'javascript';
-  if(/\b(local|function|end)\b/.test(t) && !t.includes('then') && !t.includes('elseif') && !t.includes('repeat') && !t.includes('until') && t.includes('print')) return 'lua';
-  if(/\b(def|elif|import|from)\b/.test(t)) return 'python';
-  if(t.trim().startsWith('{') && /:\s*["'{\[]?/.test(t)) return 'json';
-  if(t.includes('{') && t.includes('}')) return 'css';
-  return 'text';
-}
-
-async function copyToClipboard(){
-  try{
-    await navigator.clipboard.writeText(editor.value);
-    alert('Copiado para a área de transferência.');
-  }catch(e){
-    prompt('Copiar manualmente:', editor.value);
-  }
-}
-
-function downloadContent(filename, content){
-  const blob = new Blob([content], {type:'text/plain;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-}
-
-function openRawWindow(content){
-  const win = window.open('', '_blank');
-  win.document.write('<pre style="white-space:pre-wrap;word-break:break-word;padding:16px;background:#07120f;color:#dff7ea;font-family:ui-monospace">'+escapeHtml(content)+'</pre>');
-  win.document.title = 'RAW - Kitsune Paste';
-}
-
-function saveAndGenerate(){
-  const obj = {title: titleInput.value || '', lang: langSelect.value, content: editor.value || '', ts: Date.now()};
-  setHashFromData(obj);
-  if(expansionSelect.value === 'local') {
-    const id = 'paste_local_' + (+new Date());
-    localStorage.setItem(id, JSON.stringify(obj));
-    alert('Salvo localmente com chave: ' + id + '\nAlém disso, URL gerada!');
-  } else {
-    alert('URL gerada! Copie a barra de endereços para compartilhar.');
-  }
-}
-
-function loadFromHashOrLocal(){
-  const data = readDataFromHash();
-  if(data){
-    titleInput.value = data.title || '';
-    if(data.lang && Object.keys(HIGHLIGHTERS).includes(data.lang)) langSelect.value = data.lang;
-    else langSelect.value = 'auto';
-    editor.value = data.content || '';
-    renderPreview();
-  } else {
-    const keys = Object.keys(localStorage).filter(k=>k.startsWith('paste_local_')).sort();
-    if(keys.length){
-      const last = JSON.parse(localStorage.getItem(keys[keys.length-1]));
-      titleInput.value = last.title || '';
-      editor.value = last.content || '';
-      renderPreview();
-    }
-  }
-  updateHashInfo();
-}
-
-let dark = true;
-const themeBtn = $('themeBtn');
-themeBtn.addEventListener('click', ()=>{
-  if(dark){
-    document.documentElement.style.setProperty('--bg','#f6fff8');
-    document.documentElement.style.setProperty('--panel','#ffffff');
-    document.documentElement.style.setProperty('--muted','#2d4a41');
-    document.documentElement.style.setProperty('--accent','#2dd36f');
-    document.body.style.color = '#063827';
-    dark = false;
-  } else {
-    document.documentElement.style.setProperty('--bg','#0b0e0f');
-    document.documentElement.style.setProperty('--panel','#0f1515');
-    document.documentElement.style.setProperty('--muted','#98a3a3');
-    document.body.style.color = '#dfeeea';
-    dark = true;
- 
+  if(t.includes('<?php') || /<\s*html
