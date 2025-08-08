@@ -1,62 +1,214 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>🦊 Kitsune Paste - Clone</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🦊 Kitsune Paste — Clone</title>
 <style>
-  :root{
-    --bg:#0b0e0f;
-    --panel:#0f1515;
-    --muted:#98a3a3;
-    --accent:#2dd36f;
-    --danger:#ff6b6b;
-    --glass: rgba(255,255,255,0.03);
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  :root {
+    --bg: #0b0e0f;
+    --panel: #0f1515;
+    --muted: #98a3a3;
+    --accent: #2dd36f;
+    --danger: #ff6b6b;
+    --glass: rgba(255, 255, 255, 0.03);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial;
   }
-  *{box-sizing:border-box}
-  body{
-    margin:0; min-height:100vh; background:
-    radial-gradient(800px 300px at 10% 10%, rgba(45,211,111,0.03), transparent),
-    radial-gradient(600px 300px at 90% 90%, rgba(45,211,111,0.02), transparent),
-    var(--bg); color:#dfeeea;
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  * {
+    box-sizing: border-box;
   }
-  .wrap{max-width:1100px; margin:28px auto; padding:20px; display:grid; grid-template-columns: 420px 1fr; gap:18px;}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius:10px; padding:14px; box-shadow: 0 6px 30px rgba(2,6,6,0.6); border:1px solid rgba(255,255,255,0.03)}
-  header{display:flex; align-items:center; gap:12px; margin-bottom:12px}
-  .logo{width:48px;height:48px;border-radius:10px; background:linear-gradient(135deg,#0f6,#2dd36f); display:flex;align-items:center;justify-content:center;font-weight:700;color:#022;}
-  h1{font-size:18px;margin:0}
-  p.lead{margin:0;color:var(--muted);font-size:13px}
-  label{display:block;font-size:13px;margin:10px 0 6px;color:var(--muted)}
-  input[type="text"], select{
-    width:100%; padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03); background:var(--panel); color:inherit; outline:none;
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(
+        800px 300px at 10% 10%,
+        rgba(45, 211, 111, 0.03),
+        transparent
+      ),
+      radial-gradient(600px 300px at 90% 90%, rgba(45, 211, 111, 0.02), transparent),
+      var(--bg);
+    color: #dfeeea;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  textarea{
-    width:100%; min-height:360px; resize:vertical; padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-    border:1px solid rgba(255,255,255,0.03); color: #dff7ea; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; font-size:13px;
+  .wrap {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 18px;
   }
-  .actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-  button{
-    padding:9px 12px;border-radius:8px;border:0;background:var(--glass); color:var(--muted); cursor:pointer;
+  .card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 6px 30px rgba(2, 6, 6, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.03);
   }
-  button.primary{background:linear-gradient(90deg,var(--accent),#25b964); color:#022;font-weight:600}
-  button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.03)}
-  button.warn{background:linear-gradient(90deg,var(--danger),#ff4b4b); color:#111}
-  .preview {padding:12px; border-radius:8px; height:520px; overflow:auto; background:linear-gradient(180deg, rgba(0,0,0,0.08), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.02)}
-  pre{margin:0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; font-size:13px; line-height:1.5; white-space:pre-wrap; word-break:break-word}
-  .meta{display:flex; gap:8px; align-items:center; justify-content:space-between; margin-bottom:8px}
-  .small{font-size:12px;color:var(--muted)}
-  .badge{background:rgba(0,0,0,0.25); padding:6px 8px;border-radius:999px;font-weight:600}
-  @media (max-width:980px){
-    .wrap{grid-template-columns:1fr; padding:12px}
-    .preview{height:360px}
+  header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0f6, #2dd36f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #022;
+    user-select: none;
+  }
+  h1 {
+    font-size: 18px;
+    margin: 0;
+  }
+  p.lead {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    margin: 10px 0 6px;
+    color: var(--muted);
+    user-select: none;
+  }
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: var(--panel);
+    color: inherit;
+    outline: none;
+    font-size: 14px;
+  }
+  textarea {
+    width: 100%;
+    min-height: 360px;
+    resize: vertical;
+    padding: 12px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    color: #dff7ea;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  button {
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 0;
+    background: var(--glass);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  button:hover {
+    background: var(--accent);
+    color: #022;
+  }
+  button.primary {
+    background: linear-gradient(90deg, var(--accent), #25b964);
+    color: #022;
+    font-weight: 600;
+  }
+  button.primary:hover {
+    background: #22cc57;
+    color: #011;
+  }
+  button.ghost {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  button.ghost:hover {
+    background: var(--accent);
+    color: #022;
+    border-color: var(--accent);
+  }
+  button.warn {
+    background: linear-gradient(90deg, var(--danger), #ff4b4b);
+    color: #111;
+  }
+  button.warn:hover {
+    background: #ff3a3a;
+    color: #222;
+  }
+  .preview {
+    padding: 12px;
+    border-radius: 8px;
+    height: 520px;
+    overflow: auto;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  pre {
+    margin: 0;
+  }
+  .meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    user-select: none;
+  }
+  .small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .badge {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 6px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  @media (max-width: 980px) {
+    .wrap {
+      grid-template-columns: 1fr;
+      padding: 12px;
+    }
+    .preview {
+      height: 360px;
+    }
   }
   /* syntax highlight styles */
-  .tok-k { color:#7ee787; font-weight:600 }
-  .tok-fn { color:#8fdaf0 }
-  .tok-str { color:#ffd38a }
-  .tok-cm { color:#7b8b8b; font-style:italic }
+  .tok-k {
+    color: #7ee787;
+    font-weight: 600;
+  }
+  .tok-fn {
+    color: #8fdaf0;
+  }
+  .tok-str {
+    color: #ffd38a;
+  }
+  .tok-cm {
+    color: #7b8b8b;
+    font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -71,10 +223,10 @@
       </header>
 
       <label for="title">Título</label>
-      <input id="title" placeholder="Título do paste (opcional)" autocomplete="off">
+      <input id="title" placeholder="Título do paste (opcional)" autocomplete="off" />
 
       <label for="lang">Linguagem</label>
-      <div style="display:flex; gap:8px;">
+      <div style="display: flex; gap: 8px;">
         <select id="lang" aria-label="Seleção de linguagem">
           <option value="auto">Detectar / Texto</option>
           <option value="javascript">JavaScript</option>
@@ -101,12 +253,18 @@
         <button id="copyBtn" type="button">Copiar</button>
         <button id="downloadBtn" type="button">Download</button>
         <button id="clearBtn" class="warn" type="button">Limpar</button>
-        <button id="themeBtn" style="margin-left:auto;" class="ghost" type="button">Alternar Tema</button>
+        <button id="themeBtn" style="margin-left: auto" class="ghost" type="button">
+          Alternar Tema
+        </button>
       </div>
 
       <footer>
-        <div style="display:flex; justify-content:space-between; align-items:center">
-          <div class="small">Compartilhe a URL gerada — o conteúdo fica codificado na hash.</div>
+        <div
+          style="display: flex; justify-content: space-between; align-items: center"
+        >
+          <div class="small">
+            Compartilhe a URL gerada — o conteúdo fica codificado na hash.
+          </div>
           <div class="small">Local only • Sem servidor</div>
         </div>
       </footer>
@@ -115,7 +273,7 @@
     <div class="card">
       <div class="meta">
         <div>
-          <div style="display:flex; gap:8px; align-items:center">
+          <div style="display: flex; gap: 8px; align-items: center">
             <div class="badge" id="badgeLang">Texto</div>
             <div class="small" id="pasteTitle">—</div>
           </div>
@@ -127,8 +285,17 @@
         <pre id="highlight"><code id="codeBlock" class="language-text">Cole ou gere um paste para visualizar aqui...</code></pre>
       </div>
 
-      <div style="display:flex; justify-content:space-between; margin-top:10px; align-items:center">
-        <div class="small">Preview com destaque simples (funciona melhor para JS/Python/Lua/HTML/CSS)</div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-top: 10px;
+          align-items: center;
+        "
+      >
+        <div class="small">
+          Preview com destaque simples (funciona melhor para JS/Python/Lua/HTML/CSS)
+        </div>
         <div>
           <button id="downloadRaw" class="ghost" type="button">Baixar RAW</button>
           <button id="openRaw" class="ghost" type="button">Abrir RAW em nova aba</button>
@@ -137,101 +304,268 @@
     </div>
   </div>
 
-<script>
-const $ = id => document.getElementById(id);
-const editor = $('editor');
-const codeBlock = $('codeBlock');
-const badgeLang = $('badgeLang');
-const pasteTitle = $('pasteTitle');
-const hashInfo = $('hashInfo');
-const langSelect = $('lang');
-const titleInput = $('title');
-const expansionSelect = $('expansion');
+  <script>
+    // Helpers
+    const $ = (id) => document.getElementById(id);
+    const editor = $("editor");
+    const codeBlock = $("codeBlock");
+    const badgeLang = $("badgeLang");
+    const pasteTitle = $("pasteTitle");
+    const hashInfo = $("hashInfo");
+    const langSelect = $("lang");
+    const titleInput = $("title");
+    const expansionSelect = $("expansion");
 
-// Base64 encode/decode helpers
-function b64enc(s){ return btoa(unescape(encodeURIComponent(s))); }
-function b64dec(s){ try { return decodeURIComponent(escape(atob(s))); } catch(e){ return null } }
+    // Base64 encode/decode helpers
+    function b64enc(s) {
+      return btoa(unescape(encodeURIComponent(s)));
+    }
+    function b64dec(s) {
+      try {
+        return decodeURIComponent(escape(atob(s)));
+      } catch (e) {
+        return null;
+      }
+    }
 
-// Atualiza a hash da URL com os dados codificados
-function setHashFromData(obj){
-  const json = JSON.stringify(obj);
-  const b = b64enc(json);
-  location.hash = b;
-  updateHashInfo();
-}
+    // Atualiza a hash da URL com os dados codificados
+    function setHashFromData(obj) {
+      const json = JSON.stringify(obj);
+      const b = b64enc(json);
+      location.hash = b;
+      updateHashInfo();
+    }
 
-// Lê dados da hash atual da URL e decodifica
-function readDataFromHash(){
-  if(!location.hash) return null;
-  const b = location.hash.slice(1);
-  const json = b64dec(b);
-  if(!json) return null;
-  try{ return JSON.parse(json); } catch(e){ return null }
-}
+    // Lê dados da hash atual da URL e decodifica
+    function readDataFromHash() {
+      if (!location.hash) return null;
+      const b = location.hash.slice(1);
+      const json = b64dec(b);
+      if (!json) return null;
+      try {
+        return JSON.parse(json);
+      } catch (e) {
+        return null;
+      }
+    }
 
-// Atualiza texto informativo sobre hash
-function updateHashInfo(){
-  if(location.hash){
-    const short = location.hash.slice(1,9);
-    hashInfo.textContent = 'hash: #' + short + ' • Copie a URL para compartilhar';
-  } else {
-    hashInfo.textContent = 'URL: —';
-  }
-}
+    // Atualiza texto informativo sobre hash
+    function updateHashInfo() {
+      if (location.hash) {
+        const short = location.hash.slice(1, 9);
+        hashInfo.textContent = "hash: #" + short + " • Copie a URL para compartilhar";
+      } else {
+        hashInfo.textContent = "URL: —";
+      }
+    }
 
-// Escape simples para HTML
-function escapeHtml(str){
-  return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-}
+    // Escape simples para HTML
+    function escapeHtml(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
 
-// Highlight simples para algumas linguagens
-const HIGHLIGHTERS = {
-  javascript: str => {
-    return escapeHtml(str)
-      .replace(/(\/\/.*$)/gm, '<span class="tok-cm">$1</span>')
-      .replace(/(".*?"|'.*?'|`.*?`)/g, '<span class="tok-str">$1</span>')
-      .replace(/\b(const|let|var|function|return|if|else|for|while|switch|case|break|continue|new|class|extends|import|from|export|await|async|try|catch)\b/g, '<span class="tok-k">$1</span>')
-      .replace(/\b([A-Za-z_]\w*)(?=\s*\()/g, '<span class="tok-fn">$1</span>');
-  },
-  lua: str => {
-    return escapeHtml(str)
-      .replace(/(--.*$)/gm, '<span class="tok-cm">$1</span>')
-      .replace(/(".*?"|'.*?')/g, '<span class="tok-str">$1</span>')
-      .replace(/\b(local|function|end|if|then|else|for|in|while|do|repeat|until|return|nil|true|false)\b/g, '<span class="tok-k">$1</span>')
-      .replace(/\b([A-Za-z_]\w*)(?=\s*\()/g, '<span class="tok-fn">$1</span>');
-  },
-  python: str => {
-    return escapeHtml(str)
-      .replace(/(#.*$)/gm, '<span class="tok-cm">$1</span>')
-      .replace(/(".*?"|'.*?')/g, '<span class="tok-str">$1</span>')
-      .replace(/\b(def|class|return|if|elif|else|for|while|try|except|with|as|import|from|pass|break|continue|lambda|True|False|None)\b/g, '<span class="tok-k">$1</span>')
-      .replace(/\b([A-Za-z_]\w*)(?=\s*\()/g, '<span class="tok-fn">$1</span>');
-  },
-  html: str => {
-    return escapeHtml(str)
-      .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="tok-cm">$1</span>')
-      .replace(/(&lt;\/?[^\s&]+?)(\s|&gt;)/g, '<span class="tok-k">$1</span>$2')
-      .replace(/(".*?"|'.*?')/g, '<span class="tok-str">$1</span>');
-  },
-  css: str => {
-    return escapeHtml(str)
-      .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="tok-cm">$1</span>')
-      .replace(/([.#]?[a-zA-Z0-9\-\_]+)(?=\s*\{)/g, '<span class="tok-k">$1</span>')
-      .replace(/(:\s*)([^;}\n]+)/g, '$1<span class="tok-str">$2</span>');
-  },
-  default: str => escapeHtml(str)
-};
+    // Highlight simples para algumas linguagens
+    const HIGHLIGHTERS = {
+      javascript: (str) => {
+        return escapeHtml(str)
+          .replace(/(\/\/.*$)/gm, '<span class="tok-cm">$1</span>')
+          .replace(/(".*?"|'.*?'|`.*?`)/g, '<span class="tok-str">$1</span>')
+          .replace(
+            /\b(const|let|var|function|return|if|else|for|while|switch|case|break|continue|new|class|extends|import|from|export|await|async|try|catch)\b/g,
+            '<span class="tok-k">$1</span>'
+          )
+          .replace(/\b([A-Za-z_]\w*)(?=\s*\()/g, '<span class="tok-fn">$1</span>');
+      },
+      lua: (str) => {
+        return escapeHtml(str)
+          .replace(/(--.*$)/gm, '<span class="tok-cm">$1</span>')
+          .replace(/(".*?"|'.*?')/g, '<span class="tok-str">$1</span>')
+          .replace(
+            /\b(local|function|end|if|then|else|for|in|while|do|repeat|until|return|nil|true|false)\b/g,
+            '<span class="tok-k">$1</span>'
+          )
+          .replace(/\b([A-Za-z_]\w*)(?=\s*\()/g, '<span class="tok-fn">$1</span>');
+      },
+      python: (str) => {
+        return escapeHtml(str)
+          .replace(/(#.*$)/gm, '<span class="tok-cm">$1</span>')
+          .replace(/(".*?"|'.*?')/g, '<span class="tok-str">$1</span>')
+          .replace(
+            /\b(def|class|return|if|elif|else|for|while|try|except|with|as|import|from|pass|break|continue|lambda|True|False|None)\b/g,
+            '<span class="tok-k">$1</span>'
+          )
+          .replace(/\b([A-Za-z_]\w*)(?=\s*\()/g, '<span class="tok-fn">$1</span>');
+      },
+      html: (str) => {
+        return escapeHtml(str)
+          .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="tok-cm">$1</span>')
+          .replace(/(&lt;\/?[^\s&]+?)(\s|&gt;)/g, '<span class="tok-k">$1</span>$2')
+          .replace(/(".*?"|'.*?')/g, '<span class="tok-str">$1</span>');
+      },
+      css: (str) => {
+        return escapeHtml(str)
+          .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="tok-cm">$1</span>')
+          .replace(/([.#]?[a-zA-Z0-9\-\_]+)(?=\s*\{)/g, '<span class="tok-k">$1</span>')
+          .replace(/(:\s*)([^;}\n]+)/g, '$1<span class="tok-str">$2</span>');
+      },
+      default: (str) => escapeHtml(str),
+    };
 
-// Renderiza o preview com highlight
-function renderPreview(){
-  const lang = (langSelect.value === 'auto') ? detectLang(editor.value) : langSelect.value;
-  badgeLang.textContent = lang;
-  pasteTitle.textContent = titleInput.value || '—';
-  const html = highlightText(lang, editor.value || ' ');
-  codeBlock.innerHTML = html;
-}
+    // Renderiza o preview com highlight
+    function renderPreview() {
+      const lang = langSelect.value === "auto" ? detectLang(editor.value) : langSelect.value;
+      badgeLang.textContent = lang;
+      pasteTitle.textContent = titleInput.value || "—";
+      const html = highlightText(lang, editor.value || " ");
+      codeBlock.innerHTML = html;
+    }
 
-// Detecta linguagem básica pelo conteúdo
-function detectLang(text){
-  const t = text.slice(0,2000).toLowerCase();
-  if(t.includes('<?php') || /<\s*html
+    // Detecta linguagem básica pelo conteúdo
+    function detectLang(text) {
+      const t = text.slice(0, 2000).toLowerCase();
+      if (t.includes("<?php") || /<\s*html/.test(t)) return "html";
+      if (/\bfunction\b/.test(t) && /=>/.test(t)) return "javascript";
+      if (/\b(local|function|end)\b/.test(t)) return "lua";
+      if (/\b(def|elif|import|from)\b/.test(t)) return "python";
+      if (t.trim().startsWith("{") && /:\s*["'{\[]?/.test(t)) return "json";
+      if (t.includes("{") && t.includes("}")) return "css";
+      return "text";
+    }
+
+    // Highlight wrapper
+    function highlightText(lang, text) {
+      const fn = HIGHLIGHTERS[lang] || HIGHLIGHTERS.default;
+      try {
+        return fn(text);
+      } catch {
+        return escapeHtml(text);
+      }
+    }
+
+    // Copiar para a área de transferência
+    async function copyToClipboard() {
+      try {
+        await navigator.clipboard.writeText(editor.value);
+        alert("Copiado para a área de transferência.");
+      } catch {
+        prompt("Copiar manualmente:", editor.value);
+      }
+    }
+
+    // Download do conteúdo
+    function downloadContent(filename, content) {
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    }
+
+    // Abrir RAW em nova aba (apenas o código puro)
+    function openRaw() {
+      const code = editor.value || "";
+      const blob = new Blob([code], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
+
+    // Botões handlers
+    $("saveBtn").addEventListener("click", () => {
+      const data = {
+        title: titleInput.value.trim(),
+        lang: langSelect.value,
+        content: editor.value,
+        savedAt: Date.now(),
+      };
+      setHashFromData(data);
+      renderPreview();
+      alert("Link gerado na barra de endereço! Pode copiar e compartilhar.");
+    });
+
+    $("rawBtn").addEventListener("click", () => {
+      openRaw();
+    });
+
+    $("copyBtn").addEventListener("click", () => {
+      copyToClipboard();
+    });
+
+    $("downloadBtn").addEventListener("click", () => {
+      const filename =
+        (titleInput.value.trim() || "kitsune-paste") +
+        (langSelect.value === "auto" || langSelect.value === "text"
+          ? ".txt"
+          : "." + langSelect.value);
+      downloadContent(filename, editor.value);
+    });
+
+    $("clearBtn").addEventListener("click", () => {
+      if (
+        confirm(
+          "Tem certeza que deseja limpar tudo? O conteúdo atual será perdido."
+        )
+      ) {
+        editor.value = "";
+        titleInput.value = "";
+        langSelect.value = "auto";
+        expansionSelect.value = "none";
+        location.hash = "";
+        updateHashInfo();
+        renderPreview();
+      }
+    });
+
+    // Alternar tema claro/escuro simples
+    const darkThemeClass = "dark-theme";
+    const body = document.body;
+
+    $("themeBtn").addEventListener("click", () => {
+      body.classList.toggle(darkThemeClass);
+      if (body.classList.contains(darkThemeClass)) {
+        // tema claro
+        body.style.background = "#f0f5f0";
+        body.style.color = "#222";
+        // ajustar outros elementos
+      } else {
+        // tema escuro (padrão)
+        body.style.background =
+          'radial-gradient(800px 300px at 10% 10%, rgba(45,211,111,0.03), transparent), radial-gradient(600px 300px at 90% 90%, rgba(45,211,111,0.02), transparent), #0b0e0f';
+        body.style.color = "#dfeeea";
+      }
+    });
+
+    // Atualiza preview ao digitar ou mudar linguagem/título
+    editor.addEventListener("input", renderPreview);
+    langSelect.addEventListener("change", renderPreview);
+    titleInput.addEventListener("input", renderPreview);
+
+    // Ao carregar a página, tenta ler hash e preencher
+    function loadFromHash() {
+      const data = readDataFromHash();
+      if (data) {
+        titleInput.value = data.title || "";
+        langSelect.value = data.lang || "auto";
+        editor.value = data.content || "";
+        renderPreview();
+        updateHashInfo();
+      } else {
+        // inicial
+        updateHashInfo();
+        renderPreview();
+      }
+    }
+
+    loadFromHash();
+  </script>
+</body>
+</html>
